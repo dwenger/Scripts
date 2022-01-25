@@ -2,6 +2,7 @@
 
 Inspired by Matthew Warren's (aka Haircut) Python-based workflow for this process.
 Here's his blog post about it: https://www.macblog.org/posts/automatically-renaming-computers-from-a-google-sheet-with-jamf-pro/
+
 Here's his Python-based approach: https://gist.github.com/haircut/1debf91078ce75612bf2f0c3b3d99f03
 
 You need to use the following format for Google Sheets: `https://docs.google.com/spreadsheets/u/0/d/<documentID>/export?format=csv&id=<documentID>&gid=0`
