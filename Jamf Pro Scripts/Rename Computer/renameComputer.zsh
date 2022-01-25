@@ -1,10 +1,17 @@
 #!/bin/zsh
+# Inspired by Matthew Warren's (aka Haircut) Python-based workflow for this process.
+# Here's his blog post about it: https://www.macblog.org/posts/automatically-renaming-computers-from-a-google-sheet-with-jamf-pro/
+# Here's his Python-based approach: https://gist.github.com/haircut/1debf91078ce75612bf2f0c3b3d99f03
 # Format needed for Google Sheet download: https://docs.google.com/spreadsheets/u/0/d/<documentID>/export?format=csv&id=<documentID>&gid=0
 
 ################### IMPORTANT - REQUIRED PARAMETERS ###################
 # Pass the URL for your CSV in Parameter 4 in your JPS policy.
 # Set Parameter 5 in your JPS policy to 0 if not all computers require a defined hostname. Set to 1 if all computers require a defined hostname.
 #######################################################################
+
+csvURL="${4}"
+csvPath='/var/tmp/computernames.csv'
+serial="$(/usr/sbin/system_profiler SPHardwareDataType | /usr/bin/awk '/Serial/ {print $4}')"
 
 # Check Parameter 5. If empty or unexpected value, exit with an error.
 if [[ "${5}" == "" ]]; then
@@ -17,10 +24,6 @@ elif [[ "${5}" == "1" ]]; then
 else echo "ERROR: Unexpected value passed to Parameter 5. Make sure it matches one of the options specified in the script header comments."
     exit 1
 fi
-
-csvURL="${4}"
-csvPath='/var/tmp/computernames.csv'
-serial="$(/usr/sbin/system_profiler SPHardwareDataType | /usr/bin/awk '/Serial/ {print $4}')"
 
 downloadCSV() {
     if [[ "${csvURL}" != "" ]]; then
